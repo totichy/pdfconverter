@@ -4,7 +4,7 @@ using PdfSharp.Pdf;
 
 namespace pdfconvertor;
 
-public class TiffToPdfinterface : ITiffToPdfInterface
+public class TiffToPdService : ITiffToPdfInterface
 {
     public async Task<byte[]> ConvertTiffToPdfAsync(byte[] srcdata, int targetDpi)
     {
@@ -55,5 +55,23 @@ public class TiffToPdfinterface : ITiffToPdfInterface
                 }
             }
         }
+    }
+    
+    public async Task<byte[]> EncryptExistingPdf(byte[] pdfBytes, string password)
+    {
+        using var input = new MemoryStream(pdfBytes);
+
+        var doc = PdfSharp.Pdf.IO.PdfReader.Open(input, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Modify);
+
+        var sec = doc.SecuritySettings;
+        sec.UserPassword = password;
+        sec.OwnerPassword = password;
+        sec.PermitPrint = true;
+        sec.PermitModifyDocument = false;
+        sec.PermitExtractContent = false;
+
+        using var output = new MemoryStream();
+        doc.Save(output);
+        return output.ToArray();
     }
 }

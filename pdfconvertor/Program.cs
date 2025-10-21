@@ -28,9 +28,10 @@ class Program
 
         try
         {
-            ITiffToPdfInterface service = new TiffToPdfinterface();
+            TiffToPdService service = new TiffToPdService();
             byte[] tiffData = await File.ReadAllBytesAsync(inputTiff);
             byte[] pdfData = await service.ConvertTiffToPdfAsync(tiffData, targetDpi);
+            pdfData = await service.EncryptExistingPdf(pdfData, "Heslo1");
             await File.WriteAllBytesAsync(outputPdf, pdfData);
             Console.WriteLine($"✅ Konverze dokončena: {outputPdf}");
         }
