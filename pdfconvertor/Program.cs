@@ -31,7 +31,9 @@ class Program
             TiffToPdService service = new TiffToPdService();
             byte[] tiffData = await File.ReadAllBytesAsync(inputTiff);
             byte[] pdfData = await service.ConvertTiffToPdfAsync(tiffData, targetDpi);
+            // ================= Usage Encryption of existing PDF =================
             pdfData = await service.EncryptExistingPdf(pdfData, "Heslo1");
+            // ================= Usage Encryption of existing PDF =================
             await File.WriteAllBytesAsync(outputPdf, pdfData);
             Console.WriteLine($"✅ Konverze dokončena: {outputPdf}");
         }

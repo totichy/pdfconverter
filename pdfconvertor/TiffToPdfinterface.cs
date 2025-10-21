@@ -57,6 +57,7 @@ public class TiffToPdService : ITiffToPdfInterface
         }
     }
     
+    // ================= Encryption of existing PDF =================
     public async Task<byte[]> EncryptExistingPdf(byte[] pdfBytes, string password)
     {
         using var input = new MemoryStream(pdfBytes);
@@ -74,4 +75,5 @@ public class TiffToPdService : ITiffToPdfInterface
         doc.Save(output);
         return output.ToArray();
     }
+    // ================= Encryption of existing PDF =================
 }
